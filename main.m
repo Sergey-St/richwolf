@@ -1,26 +1,26 @@
-%% high-order (2) azimuthal polarization
-
+%% prepare workspace before calculation
 clear all
 clear classes
 close all
 clc
 
-lambda = 0.532;
-NA = 0.95;
+%% define some variables
+lambda = 0.532;     % wavelength of the focused light
+NA = 0.95;          % numerical aperture of the lens
 
-rMin = -0.2;
-rMax = 0.2;
-discretization = 40;
+rMin = -1;          % size of calculated area (cross section)
+rMax = 1;
+discretization = 80;% discretization of calculated area
 
-zMin = -0.8;
+zMin = -0.8;        % size of calculated area (section along propagation axis)
 zMax = 0.8;
 discretizationZ = discretization;
 
 saveFlag = true;
 
-r = azimuthal(lambda, 0, NA);
+%% calculation
+r = azimuthal(lambda, 0, NA);       % used for calculation of azimuthaly polarized (particularly high-order) beams
 r = r.setRBorders(rMin, rMax, discretization);
-
 r = r.setZBorders(zMin, zMax, discretizationZ);
 
 if saveFlag
@@ -30,9 +30,9 @@ if saveFlag
     r.storeFlag = false;
 end
 
-r.mVortex = 0;
-r.mAzimBeam = 3.5;
+r.mVortex = 0;      % topological charge of the beam (0 - no vortical phase)
+r.mAzimBeam = 2;    % order of the beam (0 - linearly polarized light, 1 - azimuthally polarized light, 2 - second-order CVB with energy backflow on the optical axis)
 r.outFolder = curFolder;
-r = r.plotAllFocus();
+r = r.plotAllFocus();     % start calculation of all components in cross section
 
-% r = r.plotAllAlongZ();
+% r = r.plotAllAlongZ();    % start calculation of all components in the section along propagation axis
